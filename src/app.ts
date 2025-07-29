@@ -1,1 +1,35 @@
-console.log('Hello, World!');
+
+/**
+ * First, I want the user to select the path where the file are located.
+ * 
+ * Then I want to read the file name
+ * The expected format is: DD-MM-YYYY
+ * 
+ * if the file has that format, I want to rename it to YYYY-MM-DD
+ * 
+ * then, I want to add that file to a folder.
+ * 
+ * I want to create the folder mm(digit)--mm(string)-YY 
+ * add the file that matchs the use case
+ * 
+ */
+
+import { FileManager } from "./core/FileManager";
+
+
+async function start() {
+    const path = './test';
+
+    const fileManager = new FileManager(path);
+
+    const files = await fileManager.readDirFiles();
+
+    let i = 0;
+    for (let file of files) {
+        fileManager.renameFile(file, file);
+        i++
+    }
+
+}
+
+start();
