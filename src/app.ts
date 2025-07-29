@@ -15,21 +15,24 @@
  */
 
 import { FileManager } from "./core/FileManager";
+import { splitFileName } from "./utils/splitFileName";
+import { formatDateString } from "./utils/formatDateString";
 
 
 async function start() {
     const path = './test';
 
     const fileManager = new FileManager(path);
-
     const files = await fileManager.readDirFiles();
 
-    let i = 0;
     for (let file of files) {
-        fileManager.renameFile(file, file);
-        i++
-    }
+        const {baseName, extension} = splitFileName(file);
+        const formattedDate = formatDateString(baseName);
+        const newFileName = formattedDate + extension;
 
+        fileManager.renameFile(file, newFileName);
+    }
 }
 
 start();
+
