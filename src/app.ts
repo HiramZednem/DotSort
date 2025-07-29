@@ -19,8 +19,11 @@ import { splitFileName } from "./utils/splitFileName";
 import { formatDateString } from "./utils/formatDateString";
 
 
+// TODO: hay un monton de pedos si hay una carpeta adentro... hay que ver como manejarlo
+// TODO: si un archivo no tiene el formato de fecha, truena y es un pedo...
+
 async function start() {
-    const path = './test';
+    const path = '/Users/hiram/Library/Mobile Documents/iCloud~md~obsidian/Documents/hiram/01 - Rough Notes/Daily Notes';
 
     const fileManager = new FileManager(path);
     const files = await fileManager.readDirFiles();
