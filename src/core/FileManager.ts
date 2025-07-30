@@ -26,11 +26,22 @@ export class FileManager {
     };
 
     public async createDir( dirName: string ) {
-
+        await fs.mkdir(this.path + '/' + dirName, { recursive: true });
     }
 
     public async moveFileToDir( file: string, dir: string ) {
+        const oldPath = this.path + '/' + file;
+        const newPath = this.path + '/' + dir + '/' + file;
+        try {
+            if (await this.pathExists(newPath)) {
+                console.log(`Destination file: ${newPath}  already exists`);
+                return;
+            }
 
+            await fs.rename(oldPath, newPath);
+        } catch (err: any) {
+            console.error('Error moving file:', err);
+        }
     }
 
     public async readDirFiles() {
