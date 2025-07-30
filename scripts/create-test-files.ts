@@ -34,6 +34,7 @@ export async function createTestFiles(path: string) {
 
         // first i'll delete all the files that can be in the path
         await fs.rm(path, { recursive: true, force: true });
+        await fs.mkdir(path, { recursive: true });
 
 
         testFiles.forEach(async (fileName) => {

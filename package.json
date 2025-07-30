@@ -4,9 +4,8 @@
   "description": "I had a problem, and i need to fix it ahhaha",
   "main": "src/app.js",
   "scripts": {
-    "dev": "nodemon",
-    "build": "rimraf ./dist && tsc",
-    "start": "npm run build && node dist/app.js"
+    "dev": "npm run prepare && ts-node src/app.ts",
+    "prepare": "ts-node scripts/create-test-files.ts"
   },
   "author": "HiramZednem",
   "license": "ISC",
