@@ -3,8 +3,6 @@ import { promises as fs } from 'fs';
 
 export async function createTestFiles(path: string) {
     try {
-        // 3 archivos de cada mes del año 2025
-        // 3 archivos de enero y febrero del ano 2024
         const testFiles = [
             '01-01-2024.txt', '02-01-2024.txt',
             '01-02-2024.txt', '02-02-2024.txt',
@@ -32,17 +30,15 @@ export async function createTestFiles(path: string) {
             '07-12-2024.txt', '08-12-2024.txt',
         ];
 
-        // first i'll delete all the files that can be in the path
         await fs.rm(path, { recursive: true, force: true });
-        await fs.mkdir(path, { recursive: true });
 
+        await fs.mkdir(path, { recursive: true });
 
         testFiles.forEach(async (fileName) => {
             const filePath = `${path}/${fileName}`;
             await fs.writeFile(filePath, `This is a test file for ${fileName}`);
         });
 
-        console.log('Test files created successfully.');
     } catch (error) {
         console.error('Error creating test files:', error);
     }

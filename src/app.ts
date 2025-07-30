@@ -1,41 +1,58 @@
 
-/**
- * First, I want the user to select the path where the file are located.
- * 
- * Then I want to read the file name
- * The expected format is: DD-MM-YYYY
- * 
- * if the file has that format, I want to rename it to YYYY-MM-DD
- * 
- * then, I want to add that file to a folder.
- * 
- * I want to create the folder mm(digit)--mm(string)-YY 
- * add the file that matchs the use case
- * 
- */
-
 import { FileManager } from "./core/FileManager";
 import { splitFileName } from "./utils/splitFileName";
-import { formatDateString } from "./utils/formatDateString";
+import { formatDateString } from "./utils/date-utils";
+import { Language } from './types/common';
 
 
-// TODO: hay un monton de pedos si hay una carpeta adentro... hay que ver como manejarlo
-// TODO: si un archivo no tiene el formato de fecha, truena y es un pedo...
+class App {
+    private fileManager: FileManager;
+    private language: Language;
 
-async function start() {
-    const path = './test';
+    constructor(path: string, language: Language)  {
+        this.fileManager = new FileManager(path)
+        this.language = language;
+    }
 
-    const fileManager = new FileManager(path);
-    const files = await fileManager.readDirFiles();
+    /**
+    * Standardizes the date format in file names within the managed directory.
+    *
+    * @param currentFormat - The current date format in the file names (default: 'dd-MM-yyyy').
+    * @param targetFormat - The desired date format for the file names (default: 'yyyy-MM-dd').
+    * @returns A promise that resolves when all file names have been processed.
+    */
+    public async standardizeFileDateNames(
+        currentFormat: string = 'dd-MM-yyyy',
+        targetFormat: string = 'yyyy-MM-dd'
+    ) {
+        // TODO: hay un monton de pedos si hay una carpeta adentro... hay que ver como manejarlo
+        // TODO: si un archivo no tiene el formato de fecha, truena y es un pedo...
+        const files = await this.fileManager.readDirFiles();
 
-    for (let file of files) {
-        const {baseName, extension} = splitFileName(file);
-        const formattedDate = formatDateString(baseName);
-        const newFileName = formattedDate + extension;
+        for (let file of files) {
+            const {baseName, extension} = splitFileName(file);
+            const formattedDate = formatDateString(baseName, currentFormat, targetFormat);
+            const newFileName = formattedDate + extension;
 
-        fileManager.renameFile(file, newFileName);
+            this.fileManager.renameFile(file, newFileName);
+        }
+    }
+
+    public async organizeFilesByDate() {
+        throw new Error('Not implemented');
+    }
+
+    public async groupFilesByExtension() {
+        throw new Error('Not implemented');
     }
 }
 
-start();
+async function main() {
+    const path = './test';
+
+    const app = new App(path, 'es')
+    await app.standardizeFileDateNames()
+}
+
+main();
 

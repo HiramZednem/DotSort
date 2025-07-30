@@ -1,5 +1,6 @@
 import { format, getMonth, parse } from "date-fns";
 import { es } from 'date-fns/locale'
+import { Language } from "../types/common";
 
 // TODO: In the feature add DateManager.ts that configuers the date-fns object with the language of the user
 
@@ -7,8 +8,8 @@ import { es } from 'date-fns/locale'
  * Converts a date from a given format to a desired format.
  *
  * @param inputDate - The date as a string. E.g.: '27-06-2025'
- * @param currentFormat - The current format of the date (default: 'dd-MM-yyyy')
- * @param targetFormat - The desired format (default: 'yyyy-MM-dd')
+ * @param currentFormat - The current format of the date 
+ * @param targetFormat - The desired format
  * @returns {string} The converted date as a string in the new format
  *
  * @example
@@ -17,8 +18,8 @@ import { es } from 'date-fns/locale'
  */
 export function formatDateString(
   inputDate: string,
-  currentFormat: string = 'dd-MM-yyyy',
-  targetFormat: string = 'yyyy-MM-dd'
+  currentFormat: string,
+  targetFormat: string
 ): string {
   const parsedDate = parseDate(inputDate, currentFormat);
   return format(parsedDate, targetFormat);
@@ -32,19 +33,19 @@ export function formatDateString(
  * @param {'MMM' | 'MMMM'} [monthFormat='MMM'] - The desired format for the month:
  *        - 'MMM' returns abbreviated month (e.g., "Jul").
  *        - 'MMMM' returns full month name (e.g., "July").
- * @param {'es' | 'en'} [language='en'] - Language code for the month name ('es' for Spanish, 'en' for English).
+ * @param {Language} [language='en'] - Language code for the month name ('es' for Spanish, 'en' for English).
  * @returns {string} The formatted month name in lowercase.
  */
 export function getMonthName(
   inputDate: string, 
   currentFormat: string, 
   monthFormat: 'MMM' | 'MMMM' = 'MMM', 
-  language: 'es' | 'en' = 'en'
+  language: Language = 'en'
 ): string {
   const parsedDate = parseDate(inputDate, currentFormat);
 
   const localeOptions = ( language==='es') ? { locale: es } : {};
-  return format( parsedDate, 'MMM', localeOptions ).toLowerCase();
+  return format( parsedDate, monthFormat, localeOptions ).toLowerCase();
 }
 
 function parseDate(inputDate: string, currentFormat: string) {
