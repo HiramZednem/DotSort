@@ -1,6 +1,4 @@
-import { error } from 'console';
 import { promises as fs } from 'fs';
-import { formatDateString } from '../utils/formatDateString';
 
 export class FileManager {
     private path: string;

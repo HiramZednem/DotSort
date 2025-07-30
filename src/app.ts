@@ -23,7 +23,7 @@ import { formatDateString } from "./utils/formatDateString";
 // TODO: si un archivo no tiene el formato de fecha, truena y es un pedo...
 
 async function start() {
-    const path = '/Users/hiram/Library/Mobile Documents/iCloud~md~obsidian/Documents/hiram/01 - Rough Notes/Daily Notes';
+    const path = './test';
 
     const fileManager = new FileManager(path);
     const files = await fileManager.readDirFiles();
