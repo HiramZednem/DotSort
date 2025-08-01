@@ -26,7 +26,10 @@ export class FileManager {
     };
 
     public async createDir( dirName: string ) {
-        await fs.mkdir(this.path + '/' + dirName, { recursive: true });
+        const path = this.path + '/' + dirName;
+        if ( await this.pathExists(path)) return;
+
+        await fs.mkdir(path, { recursive: true });
     }
 
     public async moveFileToDir( file: string, dir: string ) {
@@ -45,6 +48,7 @@ export class FileManager {
     }
 
     public async readDirFiles() {
+        // TODO: identificar si es directorio u arhivo
         return await fs.readdir(this.path);
     }
 

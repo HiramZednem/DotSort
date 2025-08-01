@@ -1,6 +1,6 @@
 import { format, getMonth, parse } from "date-fns";
 import { es } from 'date-fns/locale'
-import { Language } from "../types/common";
+import { Language, Month } from "../types/common";
 
 // TODO: In the feature add DateManager.ts that configuers the date-fns object with the language of the user
 
@@ -21,15 +21,13 @@ export function formatDateString(
   currentFormat: string,
   targetFormat: string
 ): string {
-  const parsedDate = parseDate(inputDate, currentFormat);
+  const parsedDate = getDateByFormat(inputDate, currentFormat);
   return format(parsedDate, targetFormat);
 }
 
 /**
- * Returns the name of the month from a date string.
- *
- * @param {string} inputDate - The date string to parse (e.g., "2025-07-30").
- * @param {string} currentFormat - The format of the input date (e.g., "yyyy-MM-dd").
+ * Returns the name of the month 
+ * @param {Month} month 
  * @param {'MMM' | 'MMMM'} [monthFormat='MMM'] - The desired format for the month:
  *        - 'MMM' returns abbreviated month (e.g., "Jul").
  *        - 'MMMM' returns full month name (e.g., "July").
@@ -37,18 +35,18 @@ export function formatDateString(
  * @returns {string} The formatted month name in lowercase.
  */
 export function getMonthName(
-  inputDate: string, 
-  currentFormat: string, 
+  month: Month,
   monthFormat: 'MMM' | 'MMMM' = 'MMM', 
   language: Language = 'en'
 ): string {
-  const parsedDate = parseDate(inputDate, currentFormat);
+  const referenceYear = 2025;
+  const date = new Date(referenceYear, month);
 
   const localeOptions = ( language==='es') ? { locale: es } : {};
-  return format( parsedDate, monthFormat, localeOptions ).toLowerCase();
+  return format( date , monthFormat, localeOptions ).toLowerCase();
 }
 
-function parseDate(inputDate: string, currentFormat: string) {
+export function getDateByFormat(inputDate: string, currentFormat: string) {
   const parsedDate = parse(inputDate, currentFormat, new Date());
 
   if (isNaN(parsedDate.getTime())) {

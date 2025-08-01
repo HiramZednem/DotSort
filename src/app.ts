@@ -1,7 +1,7 @@
 
 import { FileManager } from "./core/FileManager";
 import { splitFileName } from "./utils/splitFileName";
-import { formatDateString } from "./utils/date-utils";
+import { formatDateString, getDateByFormat, getMonthName } from "./utils/date-utils";
 import { Language } from './types/common';
 
 
@@ -38,8 +38,26 @@ class App {
         }
     }
 
-    public async organizeFilesByDate() {
-        throw new Error('Not implemented');
+    public async organizeFilesByDate(currentFormat: string = 'yyyy-MM-dd' ) {
+        const files = await this.fileManager.readDirFiles();
+    
+        const monthYear: Set<string> = new Set();
+        // extraer mes-anio en un set
+        
+        for (let file of files) {
+            const { baseName } = splitFileName(file);
+
+            const date = getDateByFormat(baseName, currentFormat);
+
+            const monthName = getMonthName(date.getMonth());
+            const year = date.getFullYear();
+
+            monthYear.add(`${monthName}-${year}`);
+        }
+
+        for( let dirName of monthYear) {
+            await this.fileManager.createDir(dirName);
+        }
     }
 
     public async groupFilesByExtension() {
@@ -51,7 +69,8 @@ async function main() {
     const path = './test';
 
     const app = new App(path, 'es')
-    await app.standardizeFileDateNames()
+    await app.standardizeFileDateNames();
+    app.organizeFilesByDate()
 }
 
 main();
