@@ -18,13 +18,42 @@ To solve this, I created **DotSort** — a simple tool to help me (and now, mayb
 
 ---
 
-## 🔭 Roadmap
+## 🗺️ DotSort Roadmap
 
-In the near future, I plan to:
+DotSort is a CLI-first tool designed to help users organize files efficiently by standardizing file names and structuring directories by date or type. The project will evolve over time to include a visual interface and extended customization options.
 
-- Build a **visual interface with Electron** to make DotSort accessible to non-technical users.
-- Allow customizable folder rules and patterns for organizing different types of directories.
-- Support for other date formats and localization.
+---
+
+### ✅ Current Phase: CLI MVP
+
+> Goal: Provide a functional, easy-to-use command-line tool to organize files.
+
+- [ ] Interactive CLI using `inquirer`.
+- [ ] Commands:
+  - Standardize file names with dates.
+  - Organize files into folders by date.
+  - Group files by extension (**coming soon**).
+- [ ] Support for multiple date formats.
+- [ ] Multilanguage support (English/Spanish).
+- [ ] Exportable as an executable (`npm link`, `pkg`).
+- [ ] Logging and summaries of operations.
+- [ ] Basic tests for core utilities (`date-utils`, renaming, etc).
+
+
+---
+
+### 💻 Future: GUI with Electron
+
+> Goal: Make DotSort accessible to non-technical users through a desktop application.
+
+- [ ] Visual interface to browse folders and define rules.
+- [ ] Preview of changes before execution.
+- [ ] Operation history and undo capability.
+- [ ] "One-click organize" mode.
+- [ ] Multi-platform packaging (macOS, Windows, Linux).
+
+
+Stay tuned and feel free to contribute or suggest features via GitHub!
 
 ---
 
