@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+import { Dirent, promises as fs } from 'fs';
 
 export class FileManager {
     private path: string;
@@ -48,8 +48,10 @@ export class FileManager {
     }
 
     public async readDirFiles() {
-        // TODO: identificar si es directorio u arhivo
-        return await fs.readdir(this.path);
+        const dirElements = await fs.readdir(this.path, { withFileTypes: true } );
+
+        return dirElements.filter(dirElement => dirElement.isFile())
+                          .map(dirElement => dirElement.name);
     }
 
     private async pathExists( path: string ): Promise<boolean> {
