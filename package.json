@@ -4,7 +4,7 @@
   "description": "I had a problem, and i need to fix it ahhaha",
   "main": "src/app.js",
   "scripts": {
-    "dev": "npm run prepare && ts-node src/app.ts",
+    "start": "ts-node src/app.ts",
     "prepare": "ts-node scripts/create-test-files.ts"
   },
   "author": "HiramZednem",

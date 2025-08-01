@@ -3,6 +3,7 @@ import { FileManager } from "./core/FileManager";
 import { splitFileName } from "./utils/splitFileName";
 import { formatDateString, getDateByFormat, getMonthName } from "./utils/date-utils";
 import { Language } from './types/common';
+import { Month } from "date-fns";
 
 
 class App {
@@ -32,36 +33,38 @@ class App {
 
             let formattedDate;
             try {
-                formattedDate = formatDateString(baseName, currentFormat, targetFormat);
+                formattedDate = formatDateString(baseName, currentFormat, targetFormat).toLowerCase();
             } catch {
-                // Unable to parse date from file name; skipping this file.
                 continue;
             }
             const newFileName = formattedDate + extension;
 
-            this.fileManager.renameFile(file, newFileName);
+            await this.fileManager.renameFile(file, newFileName);
         }
     }
 
     public async organizeFilesByDate(currentFormat: string = 'yyyy-MM-dd' ) {
         const files = await this.fileManager.readDirFiles();
     
-        const monthYear: Set<string> = new Set();
-        // extraer mes-anio en un set
-        
         for (let file of files) {
             const { baseName } = splitFileName(file);
 
-            const date = getDateByFormat(baseName, currentFormat);
+            let date;
+            try {
+                date = getDateByFormat(baseName, currentFormat);
+            } catch {
+                continue;
+            }
 
-            const monthName = getMonthName(date.getMonth());
+            const monthIndex = date.getMonth();
+            const monthIndexHumanFormat = (monthIndex+1).toString().padStart(2, '0');; 
+            const monthName = getMonthName(monthIndex);
             const year = date.getFullYear();
 
-            monthYear.add(`${monthName}-${year}`);
-        }
+            const newPath = `${year}/${monthIndexHumanFormat}-${monthName}-${year}`;
 
-        for( let dirName of monthYear) {
-            await this.fileManager.createDir(dirName);
+            await this.fileManager.createDir(newPath);
+            await this.fileManager.moveFileToDir(file,newPath);
         }
     }
 
@@ -72,10 +75,11 @@ class App {
 
 async function main() {
     const path = './test';
+    // const path = '/Users/hiram/Library/Mobile Documents/iCloud~md~obsidian/Documents/hiram/01 - Rough Notes/Daily Notes'
 
     const app = new App(path, 'es')
-    await app.standardizeFileDateNames();
-    // app.organizeFilesByDate()
+    await app.standardizeFileDateNames('dd-MM-yyyy', 'dd-MMM-yyyy');
+    await app.organizeFilesByDate('dd-MMM-yyyy')
 }
 
 main();

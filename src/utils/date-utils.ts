@@ -1,6 +1,6 @@
-import { format, getMonth, parse } from "date-fns";
+import { format, Month, parse } from "date-fns";
 import { es } from 'date-fns/locale'
-import { Language, Month } from "../types/common";
+import { Language } from "../types/common";
 
 // TODO: In the feature add DateManager.ts that configuers the date-fns object with the language of the user
 
@@ -27,7 +27,7 @@ export function formatDateString(
 
 /**
  * Returns the name of the month 
- * @param {Month} month 
+ * @param {Month | number} month 
  * @param {'MMM' | 'MMMM'} [monthFormat='MMM'] - The desired format for the month:
  *        - 'MMM' returns abbreviated month (e.g., "Jul").
  *        - 'MMMM' returns full month name (e.g., "July").
@@ -35,7 +35,7 @@ export function formatDateString(
  * @returns {string} The formatted month name in lowercase.
  */
 export function getMonthName(
-  month: Month,
+  month: Month | number,
   monthFormat: 'MMM' | 'MMMM' = 'MMM', 
   language: Language = 'en'
 ): string {
