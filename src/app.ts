@@ -25,13 +25,18 @@ class App {
         currentFormat: string = 'dd-MM-yyyy',
         targetFormat: string = 'yyyy-MM-dd'
     ) {
-        // TODO: hay un monton de pedos si hay una carpeta adentro... hay que ver como manejarlo
-        // TODO: si un archivo no tiene el formato de fecha, truena y es un pedo...
         const files = await this.fileManager.readDirFiles();
 
         for (let file of files) {
             const {baseName, extension} = splitFileName(file);
-            const formattedDate = formatDateString(baseName, currentFormat, targetFormat);
+
+            let formattedDate;
+            try {
+                formattedDate = formatDateString(baseName, currentFormat, targetFormat);
+            } catch {
+                // Unable to parse date from file name; skipping this file.
+                continue;
+            }
             const newFileName = formattedDate + extension;
 
             this.fileManager.renameFile(file, newFileName);
@@ -70,7 +75,7 @@ async function main() {
 
     const app = new App(path, 'es')
     await app.standardizeFileDateNames();
-    app.organizeFilesByDate()
+    // app.organizeFilesByDate()
 }
 
 main();
