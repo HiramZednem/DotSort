@@ -47,6 +47,7 @@ export class FileManager {
         }
     }
 
+    // This function returns the name of the file
     public async readDirFiles() {
         const dirElements = await fs.readdir(this.path, { withFileTypes: true } );
 
