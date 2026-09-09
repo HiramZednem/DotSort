@@ -1,9 +1,8 @@
 
 import { FileManager } from "./core/FileManager";
 import { splitFileName } from "./utils/splitFileName";
-import { formatDateString, getDateByFormat, getMonthName } from "./utils/date-utils";
+import { formatDateString, getDateByFormat, getMonthName, isToday } from "./utils/date-utils";
 import { Language } from './types/common';
-import { Month } from "date-fns";
 
 
 class App {
@@ -35,6 +34,10 @@ class App {
             let formattedDate;
             try {
                 formattedDate = formatDateString(date, currentFormat, targetFormat).toLowerCase();
+                if (isToday(new Date(date))) {
+                    console.log(`File "${fileName}" has today's date. Skipping renaming.`);
+                    continue;
+                }
             } catch {
                 console.warn(`Skipping file "${fileName}" due to invalid date format.`);
                 continue;
@@ -54,6 +57,10 @@ class App {
             let date;
             try {
                 date = getDateByFormat(dateOfFile, currentFormat);
+                if (isToday(date)) {
+                    console.log(`File "${fileName}" has today's date. Skipping renaming.`);
+                    continue;
+                }
             } catch {
                 console.warn(`Skipping file "${fileName}" due to invalid date format.`);
                 continue;
